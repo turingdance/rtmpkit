@@ -1,0 +1,165 @@
+<HTML>
+<HEAD>
+<title>RTMPPUB(1): </title></head>
+<table>
+<thead>
+<tr><td>RTMPPUB(1)<td align="center"><td align="right">RTMPPUB(1)
+</thead>
+<tfoot>
+<tr><td>RTMPPub v1.0<td align="center">2026-07-04<td align="right">RTMPPUB(1)
+</tfoot>
+<tbody><tr><td colspan="3"><br><br><ul>
+<!-- Copyright 2026 RTMPPub Team.
+ Copying permitted according to the GNU General Public License V2.-->
+</ul>
+
+<h3>NAME</h3><ul>
+rtmppub &minus; RTMP streaming media publisher
+</ul>
+
+<h3>SYNOPSIS</h3><ul>
+<b>rtmppub</b>
+<b>&minus;i</b><i>&nbsp;input_file</i>
+<b>&minus;r</b><i>&nbsp;rtmp_url</i>
+<br>
+<b>rtmppub &minus;h</b>
+</ul>
+
+<h3>DESCRIPTION</h3><ul>
+<b>rtmppub</b>
+is a tool for publishing media content to RTMP servers.
+<p>
+<b>rtmppub</b>
+reads media from a file and pushes it to the specified
+RTMP server. The input can be:
+<ul>
+<li>An FLV file (.flv)</li>
+<li>An H264 file (.h264 or .264)</li>
+</ul>
+<p>
+The RTMP URL should be of the form
+<pre>
+  rtmp://hostname[:port]/app/playpath
+</pre>
+</ul>
+
+<h3>OPTIONS</h3><ul>
+</ul>
+
+<h4>Required Parameters</h4><ul>
+These options are required for all operations.
+<p>
+<dl compact><dt>
+<b>&minus;&minus;input		&minus;i</b>&nbsp;<i>input_file</i>
+<dd>
+Input file path. Can be:
+<ul>
+<li>A file path ending with .flv for FLV files</li>
+<li>A file path ending with .h264 or .264 for H264 files</li>
+</ul>
+</dl>
+<p>
+<dl compact><dt>
+<b>&minus;&minus;rtmp		&minus;r</b>&nbsp;<i>url</i>
+<dd>
+URL of the RTMP server. E.g., rtmp://127.0.0.1:1935/live/test
+</dl>
+</ul>
+
+<h4>Miscellaneous</h4><ul>
+<p>
+<dl compact><dt>
+<b>&minus;&minus;help		&minus;h</b>
+<dd>
+Print a summary of command options.
+</dl>
+</ul>
+
+<h3>INPUT MODES</h3><ul>
+
+<h4>FLV File Mode</h4><ul>
+When the input is a file ending with .flv, <b>rtmppub</b> reads the FLV
+file and pushes it to the RTMP server. It parses FLV tags (audio, video,
+script) and sends them with proper timestamps.
+<p>
+Supported tag types:
+<ul>
+<li>Audio (0x08)</li>
+<li>Video (0x09)</li>
+<li>Script/Data (0x12)</li>
+</ul>
+</ul>
+
+<h4>H264 File Mode</h4><ul>
+When the input is a file ending with .h264 or .264, <b>rtmppub</b> reads
+the raw H264 stream in Annex B format. It automatically detects SPS/PPS
+and IDR frames, constructs FLV video tags, and sends them to the server.
+<p>
+Features:
+<ul>
+<li>Automatically detects NALU start codes (00 00 00 01)</li>
+<li>Parses SPS to extract video dimensions</li>
+<li>Generates AMF MetaData with video info</li>
+<li>Sends at 25fps by default</li>
+</ul>
+</ul>
+
+</ul>
+
+<h3>EXAMPLES</h3><ul>
+<dl compact><dt>
+Push FLV file:
+<dd>
+<pre>
+  rtmppub -i input.flv -r rtmp://127.0.0.1:1935/live/test
+</pre>
+</dl>
+<p>
+<dl compact><dt>
+Push H264 file:
+<dd>
+<pre>
+  rtmppub -i input.h264 -r rtmp://127.0.0.1:1935/live/test
+</pre>
+</dl>
+</ul>
+
+<h3>DEPENDENCIES</h3><ul>
+<dl compact><dt>
+<b>librtmp</b>
+<dd>
+RTMP library for communication with RTMP servers.
+</dl>
+</ul>
+
+<h3>COMPILATION</h3><ul>
+<pre>
+  make rtmppub
+</pre>
+This will compile rtmppub.c and link against librtmp.a statically.
+</ul>
+
+<h3>EXIT STATUS</h3><ul>
+<p>
+<dl compact><dt>
+<b>0</b>
+<dd>
+Successful program execution.
+</dl>
+<p>
+<dl compact><dt>
+<b>1</b>
+<dd>
+Unrecoverable error.
+</dl>
+</ul>
+
+<h3>SEE ALSO</h3><ul>
+<a href="rtmpdump.1.html"><b>rtmpdump</b></a>(1)
+</ul>
+
+<h3>AUTHORS</h3><ul>
+RTMPPub Team
+<br>
+Based on librtmp library.
+</ul></tbody></table></html>
